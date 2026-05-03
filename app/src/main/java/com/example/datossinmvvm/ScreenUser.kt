@@ -1,11 +1,10 @@
 package com.example.datossinmvvm
-
-// Android / Context / Log
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.room.Room
 import kotlinx.coroutines.launch
+
 @Composable
 fun ScreenUser() {
     val context = LocalContext.current
@@ -86,6 +86,19 @@ fun ScreenUser() {
         ) {
             Text("Listar Usuarios", fontSize=16.sp)
         }
+        Button(
+            onClick = {
+                coroutineScope.launch {
+                    // Llamamos a la función de eliminar
+                    EliminarUltimoUsuario(dao = dao)
+                    // Actualizamos la lista para ver que ya no está
+                    val data = getUsers(dao = dao)
+                    dataUser.value = data
+                }
+            }
+        ) {
+            Text("Eliminar Último Usuario", fontSize = 16.sp)
+        }
         Text(
             text = dataUser.value, fontSize = 20.sp
         )
@@ -122,4 +135,12 @@ suspend fun AgregarUsuario(user: User, dao:UserDao): Unit {
         Log.e("User","Error: insert: ${e.message}")
     }
     //}
+}
+suspend fun EliminarUltimoUsuario(dao: UserDao): Unit {
+    try {
+        dao.deleteLastUser()
+    }
+    catch (e: Exception) {
+        Log.e("User", "Error: delete: ${e.message}")
+    }
 }

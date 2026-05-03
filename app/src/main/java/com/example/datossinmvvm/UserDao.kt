@@ -1,8 +1,10 @@
 package com.example.datossinmvvm
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+
 
 @Dao
 interface UserDao {
@@ -11,4 +13,6 @@ interface UserDao {
 
     @Insert
     suspend fun insert(user: User)
+    @Query("DELETE FROM User WHERE uid = (SELECT MAX(uid) FROM User)")
+    suspend fun deleteLastUser()
 }

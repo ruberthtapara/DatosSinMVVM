@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.datossinmvvm"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.datossinmvvm"
@@ -52,6 +52,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.material3)
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
